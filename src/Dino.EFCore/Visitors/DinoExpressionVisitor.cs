@@ -63,10 +63,21 @@ public class DinoExpressionVisitor<T> : IDinoQueryVisitor<Expression> where T : 
         var left = node.Left.Accept(this);
         var right = node.Right.Accept(this);
 
-        // Handle type conversions
+        // Handle type conversions for numeric types
         if (left.Type != right.Type)
         {
-            if (right is ConstantExpression rightConstant && CanConvertConstant(rightConstant.Type, left.Type))
+            if (IsNumericType(left.Type) && IsNumericType(right.Type))
+            {
+                // Convert to the "larger" type
+                var targetType = GetCommonNumericType(left.Type, right.Type);
+            
+                if (left.Type != targetType)
+                    left = Expression.Convert(left, targetType);
+            
+                if (right.Type != targetType)
+                    right = Expression.Convert(right, targetType);
+            }
+            else if (right is ConstantExpression rightConstant && CanConvertConstant(rightConstant.Type, left.Type))
             {
                 right = ConvertConstantExpression(rightConstant, left.Type);
             }
@@ -75,7 +86,6 @@ public class DinoExpressionVisitor<T> : IDinoQueryVisitor<Expression> where T : 
                 left = ConvertConstantExpression(leftConstant, right.Type);
             }
         }
-
         return node.Operator switch
         {
             DinoBinaryOperator.Equal => Expression.Equal(left, right),
@@ -218,6 +228,36 @@ public class DinoExpressionVisitor<T> : IDinoQueryVisitor<Expression> where T : 
         var lower = node.LowerBound.Accept(this);
         var upper = node.UpperBound.Accept(this);
 
+        // Get the target type from the expression being compared
+        var targetType = expression.Type;
+    
+        // Convert bounds to match the expression type
+        if (lower.Type != targetType)
+        {
+            if (lower is ConstantExpression lowerConst && IsNumericType(targetType) && IsNumericType(lower.Type))
+            {
+                var convertedValue = Convert.ChangeType(lowerConst.Value, targetType);
+                lower = Expression.Constant(convertedValue, targetType);
+            }
+            else
+            {
+                lower = Expression.Convert(lower, targetType);
+            }
+        }
+    
+        if (upper.Type != targetType)
+        {
+            if (upper is ConstantExpression upperConst && IsNumericType(targetType) && IsNumericType(upper.Type))
+            {
+                var convertedValue = Convert.ChangeType(upperConst.Value, targetType);
+                upper = Expression.Constant(convertedValue, targetType);
+            }
+            else
+            {
+                upper = Expression.Convert(upper, targetType);
+            }
+        }
+
         // expression >= lower && expression <= upper
         var lowerCheck = Expression.GreaterThanOrEqual(expression, lower);
         var upperCheck = Expression.LessThanOrEqual(expression, upper);
@@ -225,7 +265,7 @@ public class DinoExpressionVisitor<T> : IDinoQueryVisitor<Expression> where T : 
 
         return node.IsNegated ? Expression.Not(betweenExpression) : betweenExpression;
     }
-
+    
     public Expression Visit(DinoCaseExpression node)
     {
         throw new NotSupportedException("CASE expressions are not yet supported");
@@ -303,7 +343,54 @@ public class DinoExpressionVisitor<T> : IDinoQueryVisitor<Expression> where T : 
             return Expression.Constant(null, targetType);
         }
 
-        var convertedValue = Convert.ChangeType(constant.Value, targetType);
-        return Expression.Constant(convertedValue, targetType);
+        try
+        {
+            // Special handling for numeric types
+            if (IsNumericType(targetType) && IsNumericType(constant.Type))
+            {
+                var convertedValue = Convert.ChangeType(constant.Value, targetType);
+                return Expression.Constant(convertedValue, targetType);
+            }
+
+            var converted = Convert.ChangeType(constant.Value, targetType);
+            return Expression.Constant(converted, targetType);
+        }
+        catch
+        {
+            // If conversion fails, try to use Expression.Convert
+            return Expression.Convert(constant, targetType);
+        }
+    }
+
+    private bool IsNumericType(Type type)
+    {
+        return type == typeof(byte) || type == typeof(sbyte) ||
+               type == typeof(short) || type == typeof(ushort) ||
+               type == typeof(int) || type == typeof(uint) ||
+               type == typeof(long) || type == typeof(ulong) ||
+               type == typeof(float) || type == typeof(double) ||
+               type == typeof(decimal);
+    }
+    
+    private Type GetCommonNumericType(Type type1, Type type2)
+    {
+        // If either is decimal, use decimal
+        if (type1 == typeof(decimal) || type2 == typeof(decimal))
+            return typeof(decimal);
+    
+        // If either is double, use double
+        if (type1 == typeof(double) || type2 == typeof(double))
+            return typeof(double);
+    
+        // If either is float, use float
+        if (type1 == typeof(float) || type2 == typeof(float))
+            return typeof(float);
+    
+        // If either is long, use long
+        if (type1 == typeof(long) || type2 == typeof(long))
+            return typeof(long);
+    
+        // Default to int
+        return typeof(int);
     }
 }

@@ -85,7 +85,7 @@ public class DinoParserTests
         whereExpr.Right.Should().BeOfType<DinoLiteralExpression>();
         var literal = (DinoLiteralExpression)whereExpr.Right;
         literal.Value.Should().Be(18);
-        literal.ValueType.Should().Be(typeof(int));
+        literal.ValueType.Should().Be(typeof(decimal));
     }
 
     [Fact]

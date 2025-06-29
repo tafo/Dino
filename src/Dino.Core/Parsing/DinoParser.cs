@@ -634,10 +634,9 @@ public sealed class DinoParser : IDinoParser
         }
         else
         {
-            if (int.TryParse(value, out var intValue))
-                return new DinoLiteralExpression(intValue, typeof(int), token.Line, token.Column);
-            if (long.TryParse(value, out var longValue))
-                return new DinoLiteralExpression(longValue, typeof(long), token.Line, token.Column);
+            // Always parse integers as decimal to avoid type conversion issues
+            if (decimal.TryParse(value, out var decimalValue))
+                return new DinoLiteralExpression(decimalValue, typeof(decimal), token.Line, token.Column);
         }
 
         throw CreateParserException($"Invalid number literal '{value}'", token);
