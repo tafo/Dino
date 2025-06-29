@@ -2,7 +2,7 @@ namespace Dino.Core.Lexing;
 
 using Tokens;
 
-public interface ILexer
+public interface IDinoLexer
 {
     DinoToken NextToken();
     DinoToken PeekToken();

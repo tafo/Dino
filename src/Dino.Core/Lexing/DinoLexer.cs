@@ -4,7 +4,7 @@ using System.Text;
 using Tokens;
 using Exceptions;
 
-public sealed class Lexer(string input) : ILexer
+public sealed class DinoLexer(string input) : IDinoLexer
 {
     private int _position;
     private int _line = 1;
