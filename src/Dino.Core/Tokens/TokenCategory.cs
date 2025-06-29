@@ -1,4 +1,4 @@
-﻿namespace Dino.Core;
+﻿namespace Dino.Core.Tokens;
 
 public enum TokenCategory
 {
