@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Expressions;
 
 public sealed class DinoFunctionCallExpression(
@@ -13,4 +15,7 @@ public sealed class DinoFunctionCallExpression(
     public IReadOnlyList<DinoExpression> Arguments { get; } =
         arguments.ToList().AsReadOnly() ?? throw new ArgumentNullException(nameof(arguments));
     public DinoExpression? Object { get; } = o;
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }

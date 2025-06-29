@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Expressions;
 
 public sealed class DinoInExpression(
@@ -13,4 +15,7 @@ public sealed class DinoInExpression(
     public IReadOnlyList<DinoExpression> Values { get; } =
         values.ToList().AsReadOnly() ?? throw new ArgumentNullException(nameof(values));
     public bool IsNegated { get; } = isNegated;
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }

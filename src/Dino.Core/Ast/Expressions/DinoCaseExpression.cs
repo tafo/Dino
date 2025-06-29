@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Expressions;
 
 public sealed class DinoCaseExpression : DinoExpression
@@ -20,6 +22,9 @@ public sealed class DinoCaseExpression : DinoExpression
         Expression = expression;
         ElseExpression = elseExpression;
     }
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }
 
 public sealed class DinoWhenClause(DinoExpression condition, DinoExpression result)

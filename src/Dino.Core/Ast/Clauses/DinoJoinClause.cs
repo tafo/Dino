@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Clauses;
 
 using Expressions;
@@ -24,4 +26,7 @@ public sealed class DinoJoinClause : DinoClause
             
         OnCondition = onCondition;
     }
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }

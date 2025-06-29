@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Clauses;
 
 using Expressions;
@@ -20,4 +22,7 @@ public sealed class DinoGroupByClause : DinoClause
             throw new ArgumentException("At least one grouping expression is required", nameof(groupingExpressions));
         HavingCondition = havingCondition;
     }
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }

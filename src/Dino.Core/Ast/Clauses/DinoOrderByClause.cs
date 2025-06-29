@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Clauses;
 
 using Expressions;
@@ -16,6 +18,9 @@ public sealed class DinoOrderByClause : DinoClause
         if (Items.Count == 0)
             throw new ArgumentException("At least one order by item is required", nameof(items));
     }
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }
 
 public sealed class DinoOrderByItem(

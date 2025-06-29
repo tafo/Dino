@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Clauses;
 
 public sealed class DinoFromClause(
@@ -9,6 +11,9 @@ public sealed class DinoFromClause(
 {
     public DinoTableSource TableSource { get; } = tableSource ?? throw new ArgumentNullException(nameof(tableSource));
     public IReadOnlyList<DinoJoinClause> Joins { get; } = joins?.ToList().AsReadOnly() ?? new List<DinoJoinClause>().AsReadOnly();
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }
 
 public sealed class DinoTableSource(string tableName, string? alias = null)

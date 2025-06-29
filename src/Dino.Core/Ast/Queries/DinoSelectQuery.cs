@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Queries;
 
 using Clauses;
@@ -38,6 +40,9 @@ public sealed class DinoSelectQuery : DinoQueryNode
         Limit = limit;
         Offset = offset;
     }
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }
 
 public sealed class DinoSelectItem(DinoExpression expression, string? alias = null)

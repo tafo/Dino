@@ -1,17 +1,16 @@
-using Dino.Core.Ast.Queries;
 using Dino.Core.Ast.Visitors;
 
 namespace Dino.Core.Ast.Expressions;
 
-public sealed class DinoExistsExpression(
-    DinoSelectQuery subquery,
-    bool isNegated = false,
+using Queries;
+
+public sealed class DinoSubqueryExpression(
+    DinoSelectQuery query,
     int line = 0,
     int column = 0)
     : DinoExpression(line, column)
 {
-    public DinoSelectQuery Subquery { get; } = subquery ?? throw new ArgumentNullException(nameof(subquery));
-    public bool IsNegated { get; } = isNegated;
+    public DinoSelectQuery Query { get; } = query ?? throw new ArgumentNullException(nameof(query));
     
     public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
     public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);

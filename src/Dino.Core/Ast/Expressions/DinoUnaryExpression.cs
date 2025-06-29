@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Expressions;
 
 public sealed class DinoUnaryExpression(
@@ -9,4 +11,7 @@ public sealed class DinoUnaryExpression(
 {
     public DinoUnaryOperator Operator { get; } = @operator;
     public DinoExpression Operand { get; } = operand ?? throw new ArgumentNullException(nameof(operand));
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }

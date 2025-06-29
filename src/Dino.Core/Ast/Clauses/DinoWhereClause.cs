@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Clauses;
 
 using Expressions;
@@ -9,4 +11,7 @@ public sealed class DinoWhereClause(
     : DinoClause(line, column)
 {
     public DinoExpression Condition { get; } = condition ?? throw new ArgumentNullException(nameof(condition));
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }

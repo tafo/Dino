@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Expressions;
 
 public sealed class DinoParameterExpression : DinoExpression
@@ -12,4 +14,7 @@ public sealed class DinoParameterExpression : DinoExpression
             
         ParameterName = parameterName.StartsWith('@') ? parameterName : "@" + parameterName;
     }
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }

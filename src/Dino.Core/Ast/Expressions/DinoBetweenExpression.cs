@@ -1,3 +1,5 @@
+using Dino.Core.Ast.Visitors;
+
 namespace Dino.Core.Ast.Expressions;
 
 public sealed class DinoBetweenExpression(
@@ -13,4 +15,7 @@ public sealed class DinoBetweenExpression(
     public DinoExpression LowerBound { get; } = lowerBound ?? throw new ArgumentNullException(nameof(lowerBound));
     public DinoExpression UpperBound { get; } = upperBound ?? throw new ArgumentNullException(nameof(upperBound));
     public bool IsNegated { get; } = isNegated;
+    
+    public override void Accept(IDinoQueryVisitor visitor) => visitor.Visit(this);
+    public override T Accept<T>(IDinoQueryVisitor<T> visitor) => visitor.Visit(this);
 }
