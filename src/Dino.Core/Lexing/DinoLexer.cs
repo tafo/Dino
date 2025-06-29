@@ -247,7 +247,7 @@ public sealed class DinoLexer(string input) : IDinoLexer
 
         if (IsAtEnd())
         {
-            throw new LexerException(
+            throw new DinoLexerException(
                 $"Unterminated string literal starting at position {_tokenStartPosition}",
                 _position, _line, _column, input);
         }
@@ -271,7 +271,7 @@ public sealed class DinoLexer(string input) : IDinoLexer
         }
         else
         {
-            throw new LexerException(
+            throw new DinoLexerException(
                 "Invalid parameter name",
                 _position, _line, _column, input);
         }
@@ -320,7 +320,7 @@ public sealed class DinoLexer(string input) : IDinoLexer
                     return CreateToken(DinoTokenCategory.NotEqual, "!=");
                 }
 
-                throw new LexerException("Unexpected character '!'", _position, _line, _column, input);
+                throw new DinoLexerException("Unexpected character '!'", _position, _line, _column, input);
 
             case '(':
                 return CreateToken(DinoTokenCategory.OpenParen, "(");
@@ -358,14 +358,14 @@ public sealed class DinoLexer(string input) : IDinoLexer
             case '|':
                 if (CurrentChar() != '|')
                 {
-                    throw new LexerException("Unexpected character '|'", _position, _line, _column, input);
+                    throw new DinoLexerException("Unexpected character '|'", _position, _line, _column, input);
                 }
 
                 Advance();
                 return CreateToken(DinoTokenCategory.Concat, "||");
 
             default:
-                throw new LexerException($"Unexpected character '{ch}'", _position - 1, _line, _column - 1, input);
+                throw new DinoLexerException($"Unexpected character '{ch}'", _position - 1, _line, _column - 1, input);
         }
     }
 

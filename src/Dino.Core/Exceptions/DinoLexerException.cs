@@ -1,13 +1,13 @@
 namespace Dino.Core.Exceptions;
 
-public class LexerException : Exception
+public class DinoLexerException : Exception
 {
     public int Position { get; }
     public int Line { get; }
     public int Column { get; }
     public string Input { get; }
 
-    public LexerException(string message, int position, int line, int column, string input) 
+    public DinoLexerException(string message, int position, int line, int column, string input) 
         : base(message)
     {
         Position = position;
@@ -16,7 +16,7 @@ public class LexerException : Exception
         Input = input;
     }
 
-    public LexerException(string message, int position, int line, int column, string input, Exception innerException) 
+    public DinoLexerException(string message, int position, int line, int column, string input, Exception innerException) 
         : base(message, innerException)
     {
         Position = position;

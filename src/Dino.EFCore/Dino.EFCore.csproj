@@ -10,4 +10,8 @@
       <ProjectReference Include="..\Dino.Core\Dino.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+    </ItemGroup>
+
 </Project>

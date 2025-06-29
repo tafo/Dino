@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.Core", "src\Dino.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.EFCore", "src\Dino.EFCore\Dino.EFCore.csproj", "{0659F6B5-5BE2-462A-B9DB-E76967DD60DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.Core.Tests", "tests\Dino.Core.Tests\Dino.Core.Tests.csproj", "{5F38C15C-3095-4754-9601-5707E3484B5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0659F6B5-5BE2-462A-B9DB-E76967DD60DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0659F6B5-5BE2-462A-B9DB-E76967DD60DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0659F6B5-5BE2-462A-B9DB-E76967DD60DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F38C15C-3095-4754-9601-5707E3484B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F38C15C-3095-4754-9601-5707E3484B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F38C15C-3095-4754-9601-5707E3484B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F38C15C-3095-4754-9601-5707E3484B5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
