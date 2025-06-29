@@ -1,6 +1,6 @@
 ﻿namespace Dino.Core.Tokens;
 
-public enum TokenCategory
+public enum DinoTokenCategory
 {
     // Literals
     Identifier,

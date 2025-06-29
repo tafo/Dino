@@ -4,8 +4,8 @@ using Tokens;
 
 public interface ILexer
 {
-    Token NextToken();
-    Token PeekToken();
+    DinoToken NextToken();
+    DinoToken PeekToken();
     void Reset();
-    IEnumerable<Token> Tokenize();
+    IEnumerable<DinoToken> Tokenize();
 }

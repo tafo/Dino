@@ -13,99 +13,99 @@ public sealed class Lexer(string input) : ILexer
     private int _tokenStartLine;
     private int _tokenStartColumn;
 
-    private static readonly Dictionary<string, TokenCategory> Keywords = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly Dictionary<string, DinoTokenCategory> Keywords = new(StringComparer.OrdinalIgnoreCase)
     {
-        ["SELECT"] = TokenCategory.Select,
-        ["FROM"] = TokenCategory.From,
-        ["WHERE"] = TokenCategory.Where,
-        ["WITH"] = TokenCategory.With,
-        ["JOIN"] = TokenCategory.Join,
-        ["LEFT"] = TokenCategory.Left,
-        ["RIGHT"] = TokenCategory.Right,
-        ["INNER"] = TokenCategory.Inner,
-        ["OUTER"] = TokenCategory.Outer,
-        ["FULL"] = TokenCategory.Full,
-        ["CROSS"] = TokenCategory.Cross,
-        ["ON"] = TokenCategory.On,
-        ["GROUP"] = TokenCategory.Group,
-        ["BY"] = TokenCategory.By,
-        ["HAVING"] = TokenCategory.Having,
-        ["ORDER"] = TokenCategory.Order,
-        ["ASC"] = TokenCategory.Asc,
-        ["DESC"] = TokenCategory.Desc,
-        ["LIMIT"] = TokenCategory.Limit,
-        ["OFFSET"] = TokenCategory.Offset,
-        ["DISTINCT"] = TokenCategory.Distinct,
-        ["AS"] = TokenCategory.As,
-        ["UNION"] = TokenCategory.Union,
-        ["ALL"] = TokenCategory.All,
-        ["INTERSECT"] = TokenCategory.Intersect,
-        ["EXCEPT"] = TokenCategory.Except,
-        ["CASE"] = TokenCategory.Case,
-        ["WHEN"] = TokenCategory.When,
-        ["THEN"] = TokenCategory.Then,
-        ["ELSE"] = TokenCategory.Else,
-        ["END"] = TokenCategory.End,
-        ["EXISTS"] = TokenCategory.Exists,
-        ["ANY"] = TokenCategory.Any,
-        ["SOME"] = TokenCategory.Some,
-        ["CAST"] = TokenCategory.Cast,
-        ["CONVERT"] = TokenCategory.Convert,
-        ["TOP"] = TokenCategory.Top,
-        ["INTO"] = TokenCategory.Into,
-        ["OVER"] = TokenCategory.Over,
-        ["PARTITION"] = TokenCategory.Partition,
-        ["ROW"] = TokenCategory.Row,
-        ["ROWS"] = TokenCategory.Rows,
-        ["RANGE"] = TokenCategory.Range,
-        ["PRECEDING"] = TokenCategory.Preceding,
-        ["FOLLOWING"] = TokenCategory.Following,
-        ["CURRENT"] = TokenCategory.Current,
-        ["UNBOUNDED"] = TokenCategory.Unbounded,
-        ["AND"] = TokenCategory.And,
-        ["OR"] = TokenCategory.Or,
-        ["NOT"] = TokenCategory.Not,
-        ["IN"] = TokenCategory.In,
-        ["LIKE"] = TokenCategory.Like,
-        ["BETWEEN"] = TokenCategory.Between,
-        ["IS"] = TokenCategory.Is,
-        ["NULL"] = TokenCategory.Null,
-        ["TRUE"] = TokenCategory.BooleanLiteral,
-        ["FALSE"] = TokenCategory.BooleanLiteral,
-        ["COUNT"] = TokenCategory.Count,
-        ["SUM"] = TokenCategory.Sum,
-        ["AVG"] = TokenCategory.Avg,
-        ["MIN"] = TokenCategory.Min,
-        ["MAX"] = TokenCategory.Max,
-        ["STDDEV"] = TokenCategory.StdDev,
-        ["VARIANCE"] = TokenCategory.Variance,
-        ["FIRST"] = TokenCategory.First,
-        ["LAST"] = TokenCategory.Last,
-        ["STRING_AGG"] = TokenCategory.StringAgg,
-        ["ROW_NUMBER"] = TokenCategory.RowNumber,
-        ["RANK"] = TokenCategory.Rank,
-        ["DENSE_RANK"] = TokenCategory.DenseRank,
-        ["PERCENT_RANK"] = TokenCategory.PercentRank,
-        ["CUME_DIST"] = TokenCategory.CumeDist,
-        ["NTILE"] = TokenCategory.Ntile,
-        ["LAG"] = TokenCategory.Lag,
-        ["LEAD"] = TokenCategory.Lead,
-        ["FIRST_VALUE"] = TokenCategory.FirstValue,
-        ["LAST_VALUE"] = TokenCategory.LastValue,
-        ["INCLUDE"] = TokenCategory.Include,
-        ["THENINCLUDE"] = TokenCategory.ThenInclude,
-        ["ASNOTRACKING"] = TokenCategory.AsNoTracking,
-        ["ASTRACKING"] = TokenCategory.AsTracking,
-        ["ASSPLITQUERY"] = TokenCategory.AsSplitQuery,
-        ["ASNOTRACKINGWITHIDENTITYRESOLUTION"] = TokenCategory.AsNoTrackingWithIdentityResolution
+        ["SELECT"] = DinoTokenCategory.Select,
+        ["FROM"] = DinoTokenCategory.From,
+        ["WHERE"] = DinoTokenCategory.Where,
+        ["WITH"] = DinoTokenCategory.With,
+        ["JOIN"] = DinoTokenCategory.Join,
+        ["LEFT"] = DinoTokenCategory.Left,
+        ["RIGHT"] = DinoTokenCategory.Right,
+        ["INNER"] = DinoTokenCategory.Inner,
+        ["OUTER"] = DinoTokenCategory.Outer,
+        ["FULL"] = DinoTokenCategory.Full,
+        ["CROSS"] = DinoTokenCategory.Cross,
+        ["ON"] = DinoTokenCategory.On,
+        ["GROUP"] = DinoTokenCategory.Group,
+        ["BY"] = DinoTokenCategory.By,
+        ["HAVING"] = DinoTokenCategory.Having,
+        ["ORDER"] = DinoTokenCategory.Order,
+        ["ASC"] = DinoTokenCategory.Asc,
+        ["DESC"] = DinoTokenCategory.Desc,
+        ["LIMIT"] = DinoTokenCategory.Limit,
+        ["OFFSET"] = DinoTokenCategory.Offset,
+        ["DISTINCT"] = DinoTokenCategory.Distinct,
+        ["AS"] = DinoTokenCategory.As,
+        ["UNION"] = DinoTokenCategory.Union,
+        ["ALL"] = DinoTokenCategory.All,
+        ["INTERSECT"] = DinoTokenCategory.Intersect,
+        ["EXCEPT"] = DinoTokenCategory.Except,
+        ["CASE"] = DinoTokenCategory.Case,
+        ["WHEN"] = DinoTokenCategory.When,
+        ["THEN"] = DinoTokenCategory.Then,
+        ["ELSE"] = DinoTokenCategory.Else,
+        ["END"] = DinoTokenCategory.End,
+        ["EXISTS"] = DinoTokenCategory.Exists,
+        ["ANY"] = DinoTokenCategory.Any,
+        ["SOME"] = DinoTokenCategory.Some,
+        ["CAST"] = DinoTokenCategory.Cast,
+        ["CONVERT"] = DinoTokenCategory.Convert,
+        ["TOP"] = DinoTokenCategory.Top,
+        ["INTO"] = DinoTokenCategory.Into,
+        ["OVER"] = DinoTokenCategory.Over,
+        ["PARTITION"] = DinoTokenCategory.Partition,
+        ["ROW"] = DinoTokenCategory.Row,
+        ["ROWS"] = DinoTokenCategory.Rows,
+        ["RANGE"] = DinoTokenCategory.Range,
+        ["PRECEDING"] = DinoTokenCategory.Preceding,
+        ["FOLLOWING"] = DinoTokenCategory.Following,
+        ["CURRENT"] = DinoTokenCategory.Current,
+        ["UNBOUNDED"] = DinoTokenCategory.Unbounded,
+        ["AND"] = DinoTokenCategory.And,
+        ["OR"] = DinoTokenCategory.Or,
+        ["NOT"] = DinoTokenCategory.Not,
+        ["IN"] = DinoTokenCategory.In,
+        ["LIKE"] = DinoTokenCategory.Like,
+        ["BETWEEN"] = DinoTokenCategory.Between,
+        ["IS"] = DinoTokenCategory.Is,
+        ["NULL"] = DinoTokenCategory.Null,
+        ["TRUE"] = DinoTokenCategory.BooleanLiteral,
+        ["FALSE"] = DinoTokenCategory.BooleanLiteral,
+        ["COUNT"] = DinoTokenCategory.Count,
+        ["SUM"] = DinoTokenCategory.Sum,
+        ["AVG"] = DinoTokenCategory.Avg,
+        ["MIN"] = DinoTokenCategory.Min,
+        ["MAX"] = DinoTokenCategory.Max,
+        ["STDDEV"] = DinoTokenCategory.StdDev,
+        ["VARIANCE"] = DinoTokenCategory.Variance,
+        ["FIRST"] = DinoTokenCategory.First,
+        ["LAST"] = DinoTokenCategory.Last,
+        ["STRING_AGG"] = DinoTokenCategory.StringAgg,
+        ["ROW_NUMBER"] = DinoTokenCategory.RowNumber,
+        ["RANK"] = DinoTokenCategory.Rank,
+        ["DENSE_RANK"] = DinoTokenCategory.DenseRank,
+        ["PERCENT_RANK"] = DinoTokenCategory.PercentRank,
+        ["CUME_DIST"] = DinoTokenCategory.CumeDist,
+        ["NTILE"] = DinoTokenCategory.Ntile,
+        ["LAG"] = DinoTokenCategory.Lag,
+        ["LEAD"] = DinoTokenCategory.Lead,
+        ["FIRST_VALUE"] = DinoTokenCategory.FirstValue,
+        ["LAST_VALUE"] = DinoTokenCategory.LastValue,
+        ["INCLUDE"] = DinoTokenCategory.Include,
+        ["THENINCLUDE"] = DinoTokenCategory.ThenInclude,
+        ["ASNOTRACKING"] = DinoTokenCategory.AsNoTracking,
+        ["ASTRACKING"] = DinoTokenCategory.AsTracking,
+        ["ASSPLITQUERY"] = DinoTokenCategory.AsSplitQuery,
+        ["ASNOTRACKINGWITHIDENTITYRESOLUTION"] = DinoTokenCategory.AsNoTrackingWithIdentityResolution
     };
 
-    public Token NextToken()
+    public DinoToken NextToken()
     {
         SkipWhitespace();
 
         if (IsAtEnd())
-            return CreateToken(TokenCategory.End, string.Empty);
+            return CreateToken(DinoTokenCategory.End, string.Empty);
 
         MarkTokenStart();
 
@@ -125,7 +125,7 @@ public sealed class Lexer(string input) : ILexer
         };
     }
 
-    public Token PeekToken()
+    public DinoToken PeekToken()
     {
         var savedPosition = _position;
         var savedLine = _line;
@@ -147,17 +147,17 @@ public sealed class Lexer(string input) : ILexer
         _column = 1;
     }
 
-    public IEnumerable<Token> Tokenize()
+    public IEnumerable<DinoToken> Tokenize()
     {
         Reset();
-        var tokens = new List<Token>();
-        Token token;
+        var tokens = new List<DinoToken>();
+        DinoToken dinoToken;
 
         do
         {
-            token = NextToken();
-            tokens.Add(token);
-        } while (token.Category != TokenCategory.End);
+            dinoToken = NextToken();
+            tokens.Add(dinoToken);
+        } while (dinoToken.Category != DinoTokenCategory.End);
 
         return tokens;
     }
@@ -180,7 +180,7 @@ public sealed class Lexer(string input) : ILexer
         }
     }
 
-    private Token ReadIdentifierOrKeyword()
+    private DinoToken ReadIdentifierOrKeyword()
     {
         var value = new StringBuilder();
 
@@ -193,11 +193,11 @@ public sealed class Lexer(string input) : ILexer
         var text = value.ToString();
 
         return Keywords.TryGetValue(text, out var category)
-            ? CreateToken(category, category == TokenCategory.BooleanLiteral ? text.ToUpper() : text)
-            : CreateToken(TokenCategory.Identifier, text);
+            ? CreateToken(category, category == DinoTokenCategory.BooleanLiteral ? text.ToUpper() : text)
+            : CreateToken(DinoTokenCategory.Identifier, text);
     }
 
-    private Token ReadNumber()
+    private DinoToken ReadNumber()
     {
         var value = new StringBuilder();
 
@@ -209,7 +209,7 @@ public sealed class Lexer(string input) : ILexer
 
         if (IsAtEnd() || CurrentChar() != '.' || Peek() == '.' || !char.IsDigit(Peek()))
         {
-            return CreateToken(TokenCategory.NumberLiteral, value.ToString());
+            return CreateToken(DinoTokenCategory.NumberLiteral, value.ToString());
         }
 
         value.Append(CurrentChar());
@@ -221,10 +221,10 @@ public sealed class Lexer(string input) : ILexer
             Advance();
         }
 
-        return CreateToken(TokenCategory.NumberLiteral, value.ToString());
+        return CreateToken(DinoTokenCategory.NumberLiteral, value.ToString());
     }
 
-    private Token ReadString()
+    private DinoToken ReadString()
     {
         var quote = CurrentChar();
         Advance();
@@ -253,10 +253,10 @@ public sealed class Lexer(string input) : ILexer
         }
 
         Advance();
-        return CreateToken(TokenCategory.StringLiteral, value.ToString());
+        return CreateToken(DinoTokenCategory.StringLiteral, value.ToString());
     }
 
-    private Token ReadParameter()
+    private DinoToken ReadParameter()
     {
         Advance();
         var value = new StringBuilder("@");
@@ -276,10 +276,10 @@ public sealed class Lexer(string input) : ILexer
                 _position, _line, _column, input);
         }
 
-        return CreateToken(TokenCategory.Identifier, value.ToString());
+        return CreateToken(DinoTokenCategory.Identifier, value.ToString());
     }
 
-    private Token ReadOperatorOrSymbol()
+    private DinoToken ReadOperatorOrSymbol()
     {
         var ch = CurrentChar();
         Advance();
@@ -287,73 +287,73 @@ public sealed class Lexer(string input) : ILexer
         switch (ch)
         {
             case '=':
-                return CreateToken(TokenCategory.Equal, "=");
+                return CreateToken(DinoTokenCategory.Equal, "=");
 
             case '>':
                 if (CurrentChar() == '=')
                 {
                     Advance();
-                    return CreateToken(TokenCategory.GreaterThanOrEqual, ">=");
+                    return CreateToken(DinoTokenCategory.GreaterThanOrEqual, ">=");
                 }
 
-                return CreateToken(TokenCategory.GreaterThan, ">");
+                return CreateToken(DinoTokenCategory.GreaterThan, ">");
 
             case '<':
                 if (CurrentChar() == '=')
                 {
                     Advance();
-                    return CreateToken(TokenCategory.LessThanOrEqual, "<=");
+                    return CreateToken(DinoTokenCategory.LessThanOrEqual, "<=");
                 }
 
                 if (CurrentChar() == '>')
                 {
                     Advance();
-                    return CreateToken(TokenCategory.NotEqual, "<>");
+                    return CreateToken(DinoTokenCategory.NotEqual, "<>");
                 }
 
-                return CreateToken(TokenCategory.LessThan, "<");
+                return CreateToken(DinoTokenCategory.LessThan, "<");
 
             case '!':
                 if (CurrentChar() == '=')
                 {
                     Advance();
-                    return CreateToken(TokenCategory.NotEqual, "!=");
+                    return CreateToken(DinoTokenCategory.NotEqual, "!=");
                 }
 
                 throw new LexerException("Unexpected character '!'", _position, _line, _column, input);
 
             case '(':
-                return CreateToken(TokenCategory.OpenParen, "(");
+                return CreateToken(DinoTokenCategory.OpenParen, "(");
 
             case ')':
-                return CreateToken(TokenCategory.CloseParen, ")");
+                return CreateToken(DinoTokenCategory.CloseParen, ")");
 
             case '[':
-                return CreateToken(TokenCategory.OpenBracket, "[");
+                return CreateToken(DinoTokenCategory.OpenBracket, "[");
 
             case ']':
-                return CreateToken(TokenCategory.CloseBracket, "]");
+                return CreateToken(DinoTokenCategory.CloseBracket, "]");
 
             case ',':
-                return CreateToken(TokenCategory.Comma, ",");
+                return CreateToken(DinoTokenCategory.Comma, ",");
 
             case '.':
-                return CreateToken(TokenCategory.Dot, ".");
+                return CreateToken(DinoTokenCategory.Dot, ".");
 
             case '*':
-                return CreateToken(TokenCategory.Star, "*");
+                return CreateToken(DinoTokenCategory.Star, "*");
 
             case '+':
-                return CreateToken(TokenCategory.Plus, "+");
+                return CreateToken(DinoTokenCategory.Plus, "+");
 
             case '-':
-                return CreateToken(TokenCategory.Minus, "-");
+                return CreateToken(DinoTokenCategory.Minus, "-");
 
             case '/':
-                return CreateToken(TokenCategory.Divide, "/");
+                return CreateToken(DinoTokenCategory.Divide, "/");
 
             case '%':
-                return CreateToken(TokenCategory.Modulo, "%");
+                return CreateToken(DinoTokenCategory.Modulo, "%");
 
             case '|':
                 if (CurrentChar() != '|')
@@ -362,16 +362,16 @@ public sealed class Lexer(string input) : ILexer
                 }
 
                 Advance();
-                return CreateToken(TokenCategory.Concat, "||");
+                return CreateToken(DinoTokenCategory.Concat, "||");
 
             default:
                 throw new LexerException($"Unexpected character '{ch}'", _position - 1, _line, _column - 1, input);
         }
     }
 
-    private Token CreateToken(TokenCategory category, string value)
+    private DinoToken CreateToken(DinoTokenCategory category, string value)
     {
-        return new Token(category, value, _tokenStartPosition, _tokenStartLine, _tokenStartColumn);
+        return new DinoToken(category, value, _tokenStartPosition, _tokenStartLine, _tokenStartColumn);
     }
 
     private void MarkTokenStart()
