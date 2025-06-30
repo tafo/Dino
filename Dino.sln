@@ -8,6 +8,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.Core.Tests", "tests\Di
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.EFCore.Tests", "tests\Dino.EFCore.Tests\Dino.EFCore.Tests.csproj", "{DC556C4E-1A50-4DB0-8A7B-A042E67D4F66}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Markdowns", "Markdowns", "{BB72F678-1B6D-4BFC-A1B9-E298C4FD7BB3}"
+	ProjectSection(SolutionItems) = preProject
+		CONTRIBUTING.md = CONTRIBUTING.md
+		README.md = README.md
+		CHANGELOG.md = CHANGELOG.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.Sample", "samples\Dino.Sample\Dino.Sample.csproj", "{90F4565D-171F-4B99-86B4-1CAB21B288D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.QuickStart", "samples\Dino.QuickStart\Dino.QuickStart.csproj", "{E152839B-7084-49A6-A712-0A873DC75F2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +41,13 @@ Global
 		{DC556C4E-1A50-4DB0-8A7B-A042E67D4F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC556C4E-1A50-4DB0-8A7B-A042E67D4F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC556C4E-1A50-4DB0-8A7B-A042E67D4F66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F4565D-171F-4B99-86B4-1CAB21B288D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F4565D-171F-4B99-86B4-1CAB21B288D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F4565D-171F-4B99-86B4-1CAB21B288D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F4565D-171F-4B99-86B4-1CAB21B288D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E152839B-7084-49A6-A712-0A873DC75F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E152839B-7084-49A6-A712-0A873DC75F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E152839B-7084-49A6-A712-0A873DC75F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E152839B-7084-49A6-A712-0A873DC75F2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

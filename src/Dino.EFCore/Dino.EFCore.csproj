@@ -4,14 +4,42 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+
+        <!-- Package Information -->
+        <PackageId>Dino.EFCore</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Tayfun Yirdem</Authors>
+        <Company>Tayfun Yirdem</Company>
+        <Product>Dino</Product>
+        <Description>A SQL-like Domain Specific Language (DSL) for Entity Framework Core. Write familiar SQL syntax while maintaining the full power and safety of EF Core.</Description>
+        <Copyright>Copyright (c) 2025 Tayfun Yirdem</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/tafo/dino</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/tafo/dino</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>efcore;entityframework;sql;dsl;query;linq;orm;database;dynamic-query</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>icon.png</PackageIcon>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Dino.Core\Dino.Core.csproj" />
+        <ProjectReference Include="..\Dino.Core\Dino.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\icon.png" Pack="true" PackagePath="\" Condition="Exists('..\..\icon.png')" />
     </ItemGroup>
 
 </Project>

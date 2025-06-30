@@ -4,6 +4,35 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+
+        <!-- Package Information -->
+        <PackageId>Dino.Core</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Tayfun Yirdem</Authors>
+        <Company>Tayfun Yirdem</Company>
+        <Product>Dino</Product>
+        <Description>Core parsing and AST components for Dino - A SQL-like DSL for Entity Framework Core</Description>
+        <Copyright>Copyright (c) 2025 Tayfun Yirdem</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/tafo/dino</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/tafo/dino</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>sql;dsl;parser;lexer;ast;query-language</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    </ItemGroup>
 
 </Project>
