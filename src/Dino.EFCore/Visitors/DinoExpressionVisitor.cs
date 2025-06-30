@@ -28,6 +28,35 @@ public class DinoExpressionVisitor<T> : IDinoQueryVisitor<Expression> where T : 
         return Expression.Lambda<Func<T, bool>>(bodyExpression, _rootParameter);
     }
 
+    public Expression BuildJoinCondition(DinoJoinClause joinClause, ParameterExpression leftParam, ParameterExpression rightParam)
+    {
+        // Temporarily set parameters for join condition evaluation
+        var savedParams = new Dictionary<string, ParameterExpression>(_parameters);
+        
+        try
+        {
+            _parameters.Clear();
+            _parameters[leftParam.Type.Name.ToLower()] = leftParam;
+            _parameters[rightParam.Type.Name.ToLower()] = rightParam;
+            
+            if (joinClause.TableSource.Alias != null)
+            {
+                _parameters[joinClause.TableSource.Alias.ToLower()] = rightParam;
+            }
+            
+            return joinClause.OnCondition!.Accept(this);
+        }
+        finally
+        {
+            // Restore original parameters
+            _parameters.Clear();
+            foreach (var kvp in savedParams)
+            {
+                _parameters[kvp.Key] = kvp.Value;
+            }
+        }
+    }
+
     public Expression Visit(DinoSelectQuery node)
     {
         throw new NotSupportedException("SelectQuery visit is not supported in expression visitor");
@@ -123,6 +152,28 @@ public class DinoExpressionVisitor<T> : IDinoQueryVisitor<Expression> where T : 
 
     public Expression Visit(DinoIdentifierExpression node)
     {
+        // Check if it contains a dot (table.column format)
+        if (node.Name.Contains('.'))
+        {
+            var parts = node.Name.Split('.');
+            if (parts.Length == 2)
+            {
+                var tableName = parts[0].ToLower();
+                var columnName = parts[1];
+                
+                if (_parameters.TryGetValue(tableName, out var tableParam))
+                {
+                    var tableProperty = tableParam.Type.GetProperty(columnName, 
+                        BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+                    
+                    if (tableProperty != null)
+                    {
+                        return Expression.Property(tableParam, tableProperty);
+                    }
+                }
+            }
+        }
+
         // Check if it's a parameter reference
         if (_parameters.TryGetValue(node.Name.ToLower(), out var parameter))
         {
@@ -130,10 +181,10 @@ public class DinoExpressionVisitor<T> : IDinoQueryVisitor<Expression> where T : 
         }
 
         // Otherwise, it's a property access on the root parameter
-        var property = _entityType.GetProperty(node.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-        if (property != null)
+        var entityProperty = _entityType.GetProperty(node.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+        if (entityProperty != null)
         {
-            return Expression.Property(_rootParameter, property);
+            return Expression.Property(_rootParameter, entityProperty);
         }
 
         throw new InvalidOperationException($"Property '{node.Name}' not found on type '{_entityType.Name}'");
