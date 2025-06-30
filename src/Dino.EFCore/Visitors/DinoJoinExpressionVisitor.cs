@@ -27,15 +27,18 @@ public class DinoJoinExpressionVisitor<T> : IDinoQueryVisitor<Expression> where 
 
     private void InitializeTableAccessors()
     {
-        // Add root table
+        // Add root table with its name
         var rootTableName = _fromClause.TableSource.TableName.ToLower();
         _tableAccessors[rootTableName] = (_rootType, _rootParameter);
         
-        // Add alias if exists
+        // IMPORTANT: Also add the root table's alias if it exists
         if (_fromClause.TableSource.Alias != null)
         {
             _tableAccessors[_fromClause.TableSource.Alias.ToLower()] = (_rootType, _rootParameter);
         }
+        
+        // Also add the entity type name as an alias
+        _tableAccessors[_rootType.Name.ToLower()] = (_rootType, _rootParameter);
 
         // Add joined tables
         foreach (var join in _fromClause.Joins)
@@ -55,6 +58,9 @@ public class DinoJoinExpressionVisitor<T> : IDinoQueryVisitor<Expression> where 
                 {
                     _tableAccessors[join.TableSource.Alias.ToLower()] = (joinedType, accessor);
                 }
+                
+                // Also add the joined entity type name
+                _tableAccessors[joinedType.Name.ToLower()] = (joinedType, accessor);
             }
         }
     }
@@ -98,6 +104,22 @@ public class DinoJoinExpressionVisitor<T> : IDinoQueryVisitor<Expression> where 
 
     public Expression Visit(DinoIdentifierExpression node)
     {
+        // First check if it's a direct table/alias reference
+        if (_tableAccessors.TryGetValue(node.Name.ToLower(), out var directTableInfo))
+        {
+            // This is a table alias reference (e.g., just "o" or "u")
+            // Check if it's a collection
+            if (directTableInfo.Accessor.Type.IsGenericType && 
+                directTableInfo.Accessor.Type.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                // Return as-is, will be handled by member access
+                return directTableInfo.Accessor;
+            }
+            
+            // For non-collection direct references, return the accessor
+            return directTableInfo.Accessor;
+        }
+        
         // Check if it's a table.column format
         if (node.Name.Contains('.'))
         {
@@ -338,6 +360,28 @@ public class DinoJoinExpressionVisitor<T> : IDinoQueryVisitor<Expression> where 
     public Expression Visit(DinoMemberAccessExpression node)
     {
         var objectExpression = node.Object.Accept(this);
+        
+        // Check if the object is a CollectionPropertyExpression
+        if (objectExpression is CollectionPropertyExpression collectionExpr)
+        {
+            // For collection.property access, we need to handle it specially
+            // This will be converted to Any() in the binary expression handler
+            return new CollectionPropertyExpression(
+                collectionExpr.Collection, 
+                collectionExpr.ElementType, 
+                node.MemberName);
+        }
+        
+        // Check if we're accessing a property on a collection directly
+        if (objectExpression.Type.IsGenericType && 
+            objectExpression.Type.GetGenericTypeDefinition() == typeof(List<>))
+        {
+            // This is a direct collection access (e.g., orders.totalAmount)
+            // We need to return a special expression that will be handled later
+            var elementType = objectExpression.Type.GetGenericArguments()[0];
+            return new CollectionPropertyExpression(objectExpression, elementType, node.MemberName);
+        }
+        
         var property = objectExpression.Type.GetProperty(node.MemberName, 
             BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
         
