@@ -26,9 +26,7 @@ public class DinoQueryBuilder<T>(IQueryable<T> source) : IDinoQueryable<T>
 
         // If there are JOINs, we need to build a completely new query
         // Otherwise, use the simple approach
-        return ast.FromClause is { Joins.Count: > 0 }
-            ? BuildJoinQuery(ast)
-            : BuildSimpleQuery(_source, ast);
+        return ast.FromClause is { Joins.Count: > 0 } ? BuildJoinQuery(ast) : BuildSimpleQuery(_source, ast);
     }
 
     private IQueryable<T> BuildSimpleQuery(IQueryable<T> query, DinoSelectQuery ast)
@@ -84,19 +82,9 @@ public class DinoQueryBuilder<T>(IQueryable<T> source) : IDinoQueryable<T>
         // Now we need to handle WHERE conditions that might reference joined tables
         if (ast.WhereClause != null)
         {
-            try
-            {
-                // Create a custom expression builder that can handle joined table references
-                var whereExpression = BuildJoinWhereExpression(ast.FromClause, ast.WhereClause);
-                query = query.Where(whereExpression);
-            }
-            catch
-            {
-                // If we can't build WHERE expression for joins, try simple expression
-                var visitor = new DinoExpressionVisitor<T>();
-                var whereExpression = visitor.BuildWhereExpression(ast.WhereClause);
-                query = query.Where(whereExpression);
-            }
+            // Always use join expression visitor for queries with joins
+            var whereExpression = BuildJoinWhereExpression(ast.FromClause, ast.WhereClause);
+            query = query.Where(whereExpression);
         }
 
         // Apply ORDER BY
