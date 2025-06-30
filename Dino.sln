@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.Sample", "samples\Dino
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dino.QuickStart", "samples\Dino.QuickStart\Dino.QuickStart.csproj", "{E152839B-7084-49A6-A712-0A873DC75F2B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B3A05E69-B839-411A-A068-07095BF10391}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\build-packages.ps1 = Scripts\build-packages.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
